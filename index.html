@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Genius - Kuiz Interaktif</title>
+    <title>myMATH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -18,13 +18,13 @@
         ::-webkit-scrollbar-thumb:hover { background: #555; }
     </style>
 </head>
-<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+<body class="gradient-bg min-h-screen flex flex-col items-center justify-center p-4">
 
     <div id="app" class="max-w-2xl w-full glass rounded-3xl shadow-2xl overflow-hidden min-h-[600px] flex flex-col">
         
         <!-- Header -->
         <div class="p-6 text-center border-b border-gray-100">
-            <h1 class="text-3xl font-bold text-indigo-700">Math <span class="text-purple-600">Genius</span></h1>
+            <h1 class="text-3xl font-bold text-indigo-700">myMATH<span class="text-purple-600">Genius</span></h1>
             <p id="sub-header" class="text-gray-500 text-sm">Cabaran Matematik Sekolah Malaysia</p>
         </div>
 
@@ -39,12 +39,12 @@
                 <button onclick="showLevels('rendah')" class="bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-2xl flex flex-col items-center card-hover shadow-lg">
                     <span class="text-2xl mb-2">🏫</span>
                     <span class="font-bold">Sekolah Rendah</span>
-                    <span class="text-xs opacity-80">Tahun 1 - 6</span>
+                    <span class="text-xs opacity-80">Level 1 - 6</span>
                 </button>
                 <button onclick="showLevels('menengah')" class="bg-purple-500 hover:bg-purple-600 text-white p-6 rounded-2xl flex flex-col items-center card-hover shadow-lg">
                     <span class="text-2xl mb-2">🎓</span>
                     <span class="font-bold">Sekolah Menengah</span>
-                    <span class="text-xs opacity-80">Tingkatan 1 - 5</span>
+                    <span class="text-xs opacity-80">Level 1 - 5</span>
                 </button>
             </div>
         </div>
@@ -121,24 +121,29 @@
         </div>
     </div>
 
+    <!-- Footer Diletakkan Secara Berasingan di Bawah App Container -->
+    <footer class="mt-6 text-center text-white/70 text-xs max-w-2xl px-4">
+        <p>Ingin membangunkan aplikasi interaktif seperti ini mengikut keperluan anda? Hubungi pembangun web untuk perbincangan lanjut. © HCH</p>
+    </footer>
+
     <script>
         const state = {
             category: null,
             level: null,
             currentQuestionIndex: 0,
             score: 0,
-            questions: [], // Stores: {question, answer, explanation, userChoice}
+            questions: [], 
             correctAnswer: null
         };
 
         const config = {
             rendah: {
                 title: "Sekolah Rendah",
-                levels: ["Tahun 1", "Tahun 2", "Tahun 3", "Tahun 4", "Tahun 5", "Tahun 6"]
+                levels: ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6"]
             },
             menengah: {
                 title: "Sekolah Menengah",
-                levels: ["Tingkatan 1", "Tingkatan 2", "Tingkatan 3", "Tingkatan 4", "Tingkatan 5"]
+                levels: ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5"]
             }
         };
 
@@ -161,9 +166,11 @@
 
         function switchScreen(screenId) {
             ['start-screen', 'level-screen', 'quiz-screen', 'result-screen', 'review-screen'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+                const el = document.getElementById(id);
+                if(el) el.classList.add('hidden');
             });
-            document.getElementById(screenId).classList.remove('hidden');
+            const target = document.getElementById(screenId);
+            if(target) target.classList.remove('hidden');
         }
 
         function goBack(target) {
@@ -174,14 +181,14 @@
             let num1, num2, operator, question, answer, explanation;
             
             if (category === 'rendah') {
-                if (levelValue <= 2) { // Tahun 1-2
+                if (levelValue <= 2) { 
                     num1 = Math.floor(Math.random() * (levelValue * 20)) + 5;
                     num2 = Math.floor(Math.random() * (levelValue * 10)) + 1;
                     operator = Math.random() > 0.5 ? '+' : '-';
                     if (operator === '-' && num1 < num2) [num1, num2] = [num2, num1];
                     answer = operator === '+' ? num1 + num2 : num1 - num2;
                     explanation = `Langkah: Kira ${num1} ${operator === '+' ? 'tambah' : 'tolak'} ${num2}.`;
-                } else if (levelValue <= 4) { // Tahun 3-4
+                } else if (levelValue <= 4) { 
                     const ops = ['+', '-', 'x'];
                     operator = ops[Math.floor(Math.random() * ops.length)];
                     num1 = Math.floor(Math.random() * 50) + 10;
@@ -190,7 +197,7 @@
                     else if (operator === '-') { if(num1 < num2) [num1,num2]=[num2,num1]; answer = num1 - num2; }
                     else answer = num1 * num2;
                     explanation = `Langkah: Selesaikan operasi ${operator === 'x' ? 'darab' : 'aritmetik'} tersebut.`;
-                } else { // Tahun 5-6
+                } else { 
                     const ops = ['+', '-', 'x', '÷'];
                     operator = ops[Math.floor(Math.random() * ops.length)];
                     if (operator === '÷') {
@@ -205,15 +212,15 @@
                         explanation = `Langkah: Kira hasil bagi ${num1} ${operator} ${num2}.`;
                     }
                 }
-            } else { // Menengah
-                if (levelValue <= 2) { // Ting 1-2
+            } else { 
+                if (levelValue <= 2) { 
                     const ops = ['+', '-', 'x'];
                     operator = ops[Math.floor(Math.random() * ops.length)];
                     num1 = Math.floor(Math.random() * 30) - 15;
                     num2 = Math.floor(Math.random() * 30) - 15;
                     answer = operator === '+' ? num1 + num2 : (operator === '-' ? num1 - num2 : num1 * num2);
                     explanation = `Langkah: Berhati-hati dengan tanda negatif. ${num1} ${operator} (${num2}) = ${answer}.`;
-                } else { // Ting 3-5
+                } else { 
                     const types = ['square', 'root', 'linear'];
                     const type = types[Math.floor(Math.random() * types.length)];
                     if (type === 'square') {
@@ -290,7 +297,7 @@
 
         function checkAnswer(selected, btn) {
             const currentQ = state.questions[state.currentQuestionIndex];
-            currentQ.userChoice = selected; // Save choice for review
+            currentQ.userChoice = selected;
 
             const allBtns = document.querySelectorAll('#options-container button');
             allBtns.forEach(b => b.disabled = true);
